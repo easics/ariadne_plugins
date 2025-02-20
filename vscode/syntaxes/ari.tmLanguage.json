@@ -1,0 +1,211 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Ariadne",
+	"patterns": [
+		{
+			"include": "#hierarchy"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#vhdl-statements"
+		},
+		{
+			"include": "#python-statements"
+		},
+		{
+			"include": "#cpp-statements"
+		},
+		{
+			"include": "#ruby-statements"
+		},
+		{
+			"include": "#entry"
+		},
+		{
+			"include": "#assign"
+		},
+		{
+			"include": "#comment"
+		},
+		{
+			"include": "#module"
+		}
+	],
+	"repository": {
+		"hierarchy": {
+			"patterns": [{
+				"begin" : "\\b(hierarchy)\\s*([\\S]*)\\b",
+				"end" : "}",
+				"beginCaptures": {
+					"2" : {"name" : "support.class.ari"},
+					"1" : {"name" : "keyword.control.ari"}
+				},
+				"patterns" : [{
+					"name": "comment.line.ari", 
+					"match" : "(#|--).*"
+				}, {
+					"match" : "(\\s*[\\S]*\\s*)(\\:)(\\s*[\\S]*)(;)",
+					"captures": {
+						"1" : {"name" : "support.variable.ari"},
+						"2" : {"name" : "markup.other.ari"},
+						"3" : {"name" : "support.class.ari"},
+						"4" : {"name" : "markup.other.ari"}
+					}
+				}, {
+					"include" : "comment"
+				}]
+			}]
+		},
+		"module": {
+			"patterns": [{
+				"match": "\\b(info)\\s*([\\S]*)\\b",
+				"captures": {
+					"1" : {"name" : "keyword.control.ari"},
+					"0" : {"name" : "support.class.ari"}
+				}
+			}]
+		},
+		"entry": {
+			"patterns": [{
+				"begin": "[^\\S]((?:port|generic|signal|constant|xrfp|xrf|from|library|configuration|architecture|component|remove_package|add_package|move_package|exec|post_exec|in|out|inout|auto|rename_ports|group_comment|port_comment|language|add_header|move_header|create|sc_method|sc_thread|config_in_arch|entity_comment|arch_comment|inst_comment|remove_header)(?=[^a-zA-Z-_\\d])|(?:keep_case\\s*))",
+				"end" : "(;)",
+				"patterns": [
+					{
+						"include" : "comment"
+					}, 
+					{
+						"match" : "\\s*(\\S*)/(\\S*)(,|;)",
+						"captures": {
+							"1" : {
+								"name" : "support.variable.ari"
+							},
+							"2" : {
+								"name" : "support.variable.ari"
+							}
+						}
+					},
+					{
+						"match" : "\\s*([^:]*)\\s*$",
+						"captures": {
+							"0" : {
+								"name" : "support.constant.ari"
+							}
+						}
+					}
+				],
+				"beginCaptures": {
+					"1" : {
+						"name" : "keyword.other.ari"
+					},
+					"2" : {
+						"name" : "markup.other.ari"
+					}
+				},
+				"endCaptures": {
+					"1" : {
+						"name" : "markup.other.ari"
+					}
+				}
+			}
+		]
+		},
+		"comment": {
+			"patterns": [{
+				
+				"match" : ".*(#|--)(.*)",
+				"captures": {
+					"1" : {
+						"name": "comment.line.ari"
+					},
+					"2" : {
+						"name": "comment.line.ari"
+					}
+				}
+			}]
+		},
+		"strings": {
+			"name": "string.quoted.double.ari",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.ari",
+					"match": "\\\\."
+				}
+			]
+		},
+		"vhdl-statements": {
+			"name" : "meta.embedded.block.vhdl",
+			"begin": "\\b(statements|declarations|declarationstop)\\b",
+			"end": "\\bend\\s(statements|declarations|declarationstop)\\b",
+			"beginCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"endCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"patterns": [{
+				"include": "source.vhdl"
+			}]
+		},
+		"assign": {
+			"begin": "(assign)",
+			"end": "(;)",
+			"beginCaptures": {
+				"0" : {
+					"name" : "keyword.other.ari"
+				}
+			},
+			"patterns": [
+				{
+					"begin" : ".",
+					"end" : ":",
+					"include": "source.vhdl"
+				}
+			]
+		},
+		"python-statements": {
+			"name" : "meta.embedded.block.python",
+			"begin": "\\b(python|pythonpost)",
+			"end": "end\\s(python|pythonpost)",
+			"beginCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"endCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"patterns": [{
+				"include": "source.python"
+			}]
+		},
+		"cpp-statements": {
+			"name" : "meta.embedded.block.python",
+			"begin": "\\b(create)",
+			"end": "end\\s*create",
+			"beginCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"endCaptures": {
+				"0" : {
+					"name" : "keyword.control.ari"
+				}
+			},
+			"patterns": [{
+				"include": "source.cpp"
+			}]
+		}
+	},
+	"scopeName": "source.ari"
+}

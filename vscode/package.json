@@ -1,0 +1,27 @@
+{
+  "name": "vsariadne",
+  "displayName": "VSAriadne",
+  "description": "Ariadne support for VSCode",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.94.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "ari",
+      "aliases": ["Ariadne", "ari"],
+      "extensions": [".ari"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "ari",
+      "scopeName": "source.ari",
+      "path": "./syntaxes/ari.tmLanguage.json"
+    }
+
+  ]
+  }
+}
